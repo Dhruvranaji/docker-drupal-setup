@@ -13,7 +13,8 @@ RUN apk update && \
     unzip \
     curl \
     git \
-    patch && \ 
+    patch \
+    mysql-client && \ 
     docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp && \
     docker-php-ext-install -j$(nproc) gd pdo_mysql mysqli zip
 
@@ -32,6 +33,16 @@ WORKDIR /var/www/html
 # Copy the application code to the container
 COPY . /var/www/html
 
+
+#RUN echo "upload_max_filesize = 64M" > /usr/local/etc/php/conf.d/php-custom-settings.ini && \
+#    echo "post_max_size = 64M" >> /usr/local/etc/php/conf.d/php-custom-settings.ini && \
+#    echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/php-custom-settings.ini && \
+#    echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/php-custom-settings.ini && \
+#    echo "max_input_vars = 10000" >> /usr/local/etc/php/conf.d/php-custom-settings.ini && \
+#    echo "realpath_cache_size = 8096K" >> /usr/local/etc/php/conf.d/php-custom-settings.ini && \
+#    echo "realpath_cache_ttl = 3600" >> /usr/local/etc/php/conf.d/php-custom-settings.ini && \
+#    echo "memory_limit = 512M" >> /usr/local/etc/php/conf.d/php-custom-settings.ini    
+
 # Expose port 9000 for PHP-FPM
 EXPOSE 9000
 
@@ -41,4 +52,5 @@ CMD ["php-fpm"]
 # Install Drush via Composer
 # RUN composer global require drush/drush
 
+# Update PATH for Composer binaries
 ENV PATH="/var/www/html/vendor/bin:${PATH}"

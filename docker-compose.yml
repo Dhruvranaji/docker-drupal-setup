@@ -14,7 +14,7 @@ services:
   drupal:
     # image: php:8.2-fpm-alpine
     build: 
-      context: .
+      context: ./php
       dockerfile: Dockerfile
     container_name: drupal
     depends_on:
@@ -28,7 +28,7 @@ services:
       - ./:/var/www/html
   
   webserver:
-    image: nginx:1.17.4-alpine
+    image: nginx:latest
     container_name: webserver
     depends_on:
       - drupal
